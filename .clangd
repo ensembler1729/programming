@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -I.
+    - "-IC Projects/Object Orientation in C"
