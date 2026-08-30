@@ -3,30 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-String *string_new() {
-    String *str = malloc(sizeof(*str));
-    str->length = 0;
-    str->allocated = 10;
-    str->data = malloc(10);
-    str->data[str->length] = '\0';
-    return str;
-}
+int string_length(const String *self) { return self->length; }
 
-void string_delete(const String *self) {
-    free((void *)self->data);
-    free((void *)self);
-}
+char *string_get(const String *self) { return self->data; }
 
-int length(const String *self) { return self->length; }
-
-char *get_str(const String *self) { return self->data; }
-
-void dump(const String *self) {
-    printf("String length:%d allocated:%d data:{%s}\n", self->length,
-           self->allocated, self->data);
-}
-
-void str_append(String *self, char c) {
+void string_append(String *self, char c) {
     if (self->length >= (self->allocated - 2)) {
         self->allocated += 10;
         char *tmp = (char *)realloc(self->data, self->allocated);
@@ -41,13 +22,42 @@ void str_append(String *self, char c) {
     self->data[self->length] = '\0';
 }
 
-void str_appends(String *self, char *str) {
+void string_appends(String *self, char *str) {
     for (int i = 0; str[i] != '\0'; i++)
-        str_append(self, str[i]);
+        string_append(self, str[i]);
 }
 
-void str_assign(String *self, char *str) {
+void string_assign(String *self, char *str) {
     self->length = 0;
     self->data[self->length] = '\0';
-    str_appends(self, str);
+    string_appends(self, str);
+}
+
+void string_print(const String *self) {
+    printf("String <length:%d allocated:%d data:[%s]>\n", self->length,
+           self->allocated, self->data);
+}
+
+void string_delete(const String *self) {
+    free((void *)self->data);
+    free((void *)self);
+}
+
+String *string_new() {
+    String *str = malloc(sizeof(*str));
+    str->length = 0;
+    str->allocated = 10;
+    str->data = malloc(10);
+    str->data[str->length] = '\0';
+
+    str->get_length = &string_length;
+    str->get_string = &string_get;
+    str->append = &string_append;
+    str->appends = &string_appends;
+    str->assign = &string_assign;
+
+    str->print = &string_print;
+
+    str->del = &string_delete;
+    return str;
 }
