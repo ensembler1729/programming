@@ -1,3 +1,4 @@
+#include <_stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,8 +33,11 @@ int main() {
     str->print(str);
     printf("String Data: %s\n", str->get_string(str));
 
+    printf("\n");
+
     // List
     List *list = list_new();
+    list->append(list, "Zero");
     list->append(list, "One");
     list->append(list, "Two");
     list->print(list);
@@ -41,6 +45,16 @@ int main() {
     list->append(list, "Four");
     list->print(list);
     printf("Size of list: %d\n", list->get_length(list));
+    printf("Index of `Three`: %d\n", list->index(list, "Three"));
+    printf("Index of NULL: %d\n", list->index(list, NULL));
+    printf("Index of `Six`: %d\n", list->index(list, "Six"));
+    list->append(list, "Five");
+    list->append(list, "Six");
+    list->append(list, "Seven");
+    list->append(list, "Eight");
+    list->print(list);
+    printf("Size of list: %d\n", list->get_length(list));
+    printf("Index of `Seven`: %d\n", list->index(list, "Seven"));
 
     str->del(str);
     list->del(list);

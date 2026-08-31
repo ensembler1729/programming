@@ -1,40 +1,57 @@
 #include "CustomList.h"
+#include <_stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int list_length(const List *self) { return self->count; }
 
 void list_append(List *self, char *str) {
     LNode *curr = malloc(sizeof(*curr));
-    curr->text = str;
     curr->next = NULL;
 
-    LNode *tail = self->tail;
-    if (tail == NULL) {
+    size_t len = strlen(str) + 1;
+    char *strcopy = malloc(len);
+    if (strcopy)
+        memcpy(strcopy, str, len);
+    curr->text = strcopy;
+
+    if (self->tail == NULL) {
         self->head = curr;
         self->tail = curr;
-        self->count++;
-        return;
+    } else {
+        self->tail->next = curr;
+        self->tail = curr;
     }
-    tail->next = curr;
-    self->tail = curr;
     self->count++;
 }
 
-int list_index(const List *self, char *str) { return -1; }
+int list_index(const List *self, char *str) {
+    if (!str)
+        return -1;
+    LNode *curr = self->head;
+    int index = 0;
+
+    while (curr != NULL) {
+        if (curr->text && strcmp(str, curr->text) == 0)
+            return index;
+        curr = curr->next;
+        index++;
+    }
+
+    return -1;
+}
 
 void list_print(const List *self) {
     printf("[ ");
     LNode *curr = self->head;
-    while (1) {
+    while (curr != NULL) {
         printf("\"%s\"", curr->text);
-        if (curr->next == NULL) {
-            printf(" ]");
-            break;
-        }
-        printf(", ");
         curr = curr->next;
+        if (curr)
+            printf(", ");
     }
+    printf(" ]");
     printf("\n");
 }
 
