@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "CustomDictionary.h"
 #include "CustomList.h"
 #include "CustomString.h"
 
@@ -56,7 +57,22 @@ int main() {
     printf("Size of list: %d\n", list->get_length(list));
     printf("Index of `Seven`: %d\n", list->index(list, "Seven"));
 
+    printf("\n");
+
+    // Dictionary
+    Dictionary *dict = dict_new();
+    dict->put(dict, "India", "Delhi");
+    dict->put(dict, "UK", "London");
+    dict->print(dict);
+    dict->put(dict, "USA", "Washington DC");
+    dict->put(dict, "France", "Paris");
+    dict->put(dict, "Germany", "Berlin");
+    printf("Value for `France`: %s\n", dict->get(dict, "France"));
+    printf("Value for `Russia`: %s\n", dict->get(dict, "Russia"));
+    dict->print(dict);
+
     str->del(str);
     list->del(list);
+    dict->del(dict);
     return 0;
 }

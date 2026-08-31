@@ -5,6 +5,10 @@
 .DS_Store
 *.DS_Store
 Thumbs.db
+*.dSYM/
 
 # output
 *.out
+main
+*Test
+*Tests
