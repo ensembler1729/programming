@@ -46,6 +46,24 @@ void __Map_put(Map *self, char *key, int value) {
 
 int __Map_size(const Map *self) { return self->__count; }
 
+MapEntry *__MapIter_next(MapIter *self) {
+    MapEntry *entry = self->__current;
+    if (entry == NULL)
+        return NULL;
+    self->__current = self->__current->__next;
+    return entry;
+}
+
+void __MapIter_del(const MapIter *self) { free((void *)self); }
+
+MapIter *__Map_iter(Map *self) {
+    MapIter *iter = malloc(sizeof(*iter));
+    iter->__current = self->__head;
+    iter->next = &__MapIter_next;
+    iter->del = &__MapIter_del;
+    return iter;
+}
+
 void __Map_print(const Map *self) {
     MapEntry *curr;
     printf("Object Map count=%d\n", self->__count);
@@ -75,6 +93,7 @@ Map *Map_new() {
     map->put = &__Map_put;
     map->get = &__Map_get;
     map->size = &__Map_size;
+    map->iter = &__Map_iter;
     map->print = &__Map_print;
     map->del = &__Map_del;
     return map;

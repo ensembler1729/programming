@@ -3,6 +3,7 @@
 
 typedef struct MapEntry MapEntry;
 typedef struct Map Map;
+typedef struct MapIter MapIter;
 
 struct MapEntry {
     char *key;
@@ -19,10 +20,18 @@ struct Map {
     void (*put)(Map *self, char *key, int value);
     int (*get)(const Map *self, char *key, int def);
     int (*size)(const Map *self);
+    MapIter *(*iter)(const Map *self);
     void (*print)(const Map *self);
     void (*del)(const Map *self);
 };
 
 Map *Map_new();
+
+struct MapIter {
+    MapEntry *__current;
+
+    MapEntry *(*next)(MapIter *self);
+    void (*del)(const MapIter *self);
+};
 
 #endif
