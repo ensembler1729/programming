@@ -56,7 +56,7 @@ MapEntry *__MapIter_next(MapIter *self) {
 
 void __MapIter_del(const MapIter *self) { free((void *)self); }
 
-MapIter *__Map_iter(Map *self) {
+MapIter *__Map_iter(const Map *self) {
     MapIter *iter = malloc(sizeof(*iter));
     iter->__current = self->__head;
     iter->next = &__MapIter_next;
